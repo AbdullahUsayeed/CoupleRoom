@@ -1,5 +1,7 @@
 # CoupleRoom
 
+[![CI](https://github.com/AbdullahUsayeed/CoupleRoom/actions/workflows/ci.yml/badge.svg)](https://github.com/AbdullahUsayeed/CoupleRoom/actions/workflows/ci.yml)
+
 A tiny, self-hosted universe for two. One page with **video calling**, **chat**
 and **watching YouTube together**, backed by a single small Node service you
 can run on any VPS or even a Raspberry Pi.

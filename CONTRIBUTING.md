@@ -31,13 +31,15 @@ When working on the client, `npm --prefix web run build` regenerates
 
 ## Testing your change
 
-There is no test suite yet. At minimum, verify:
+```bash
+npm --prefix server test   # boots the server and exercises HTTP + websockets
+npm --prefix web run build # must succeed
+```
 
-1. `node --check` passes for every file under `server/src`.
-2. `npm --prefix web run build` succeeds.
-3. The server boots and `GET /api/health` returns `ok`.
-4. Open two browser tabs (or two devices) and confirm chat, watch-together sync
-   and a call still work, with and without `ROOM_PASSWORD` set.
+The smoke test covers health/config/TURN endpoints, the chat password gate,
+message delivery, watch-together sync and call signaling. Please also open two
+browser tabs (or two devices) and confirm a call still connects when you touch
+anything related to WebRTC.
 
 ## Pull requests
 

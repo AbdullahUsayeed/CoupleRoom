@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: |
+            server/package-lock.json
+            web/package-lock.json
+
+      - name: Install server dependencies
+        run: npm ci --prefix server
+
+      - name: Install web dependencies
+        run: npm ci --prefix web
+
+      - name: Build web client
+        run: npm --prefix web run build
+
+      - name: Lint server syntax
+        run: for f in server/src/*.js server/test/*.js; do node --check "$f"; done
+
+      - name: Smoke test
+        run: npm --prefix server test
