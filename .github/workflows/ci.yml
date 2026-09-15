@@ -33,3 +33,40 @@ jobs:
 
       - name: Smoke test
         run: npm --prefix server test
+
+  # Builds the production image and starts it, so a broken Docker layout or a
+  # missing web build fails CI instead of reaching users.
+  docker-image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Build image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          load: true
+          tags: coupleroom:ci
+
+      - name: Run image and check it serves the app
+        run: |
+          docker run -d --name coupleroom-ci -p 5088:5000 \
+            -e ROOM_NAME=ci-room \
+            coupleroom:ci
+
+          for i in $(seq 1 60); do
+            if curl -sf http://127.0.0.1:5088/api/health >/dev/null; then
+              break
+            fi
+            sleep 1
+          done
+
+          curl -sf http://127.0.0.1:5088/api/health
+          curl -sf http://127.0.0.1:5088/api/config | grep -q ci-room
+          curl -sf http://127.0.0.1:5088/ | grep -q CoupleRoom
+
+          docker logs coupleroom-ci
+          docker rm -f coupleroom-ci

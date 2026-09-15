@@ -18,14 +18,19 @@ RUN apt-get update \
   && apt-get install -y --no-install-recommends python3 make g++ \
   && rm -rf /var/lib/apt/lists/*
 
-COPY server/package.json server/package-lock.json* ./
-RUN npm install --omit=dev
+# Keep the same server/ + web/ layout as the repository so the server's
+# default paths (../.. relative to server/src) resolve to /app.
+COPY server/package.json server/package-lock.json* ./server/
+RUN npm --prefix server install --omit=dev
 
-COPY server/src ./src
+COPY server/src ./server/src
 COPY --from=web /web/dist ./web/dist
 
+# Explicit paths keep the container working even if the layout ever changes.
 ENV HOST=0.0.0.0
 ENV PORT=5000
+ENV STATIC_DIR=/app/web/dist
+ENV DB_PATH=/app/data/couple-room.db
 EXPOSE 5000
 
-CMD ["node", "src/index.js"]
+CMD ["node", "server/src/index.js"]
