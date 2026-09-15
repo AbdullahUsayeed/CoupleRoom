@@ -1,0 +1,45 @@
+# CoupleRoom from the published image (no local build).
+#
+#   cp .env.example .env        # edit it first
+#   docker compose -f docker-compose.release.yml up -d
+#
+# To pin a version, or use your own fork's image:
+#   COUPLEROOM_IMAGE=ghcr.io/abdullahusayeed/coupleroom:1.0.0 \
+#     docker compose -f docker-compose.release.yml up -d
+#
+# For TURN, enable the optional profile:
+#   docker compose -f docker-compose.release.yml --profile turn up -d
+
+services:
+  coupleroom:
+    image: ${COUPLEROOM_IMAGE:-ghcr.io/abdullahusayeed/coupleroom:latest}
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:5000:5000"
+    env_file:
+      - .env
+    environment:
+      HOST: 0.0.0.0
+      PORT: "5000"
+      DB_PATH: /app/data/couple-room.db
+    volumes:
+      - coupleroom-data:/app/data
+
+  coturn:
+    image: coturn/coturn:4.6
+    profiles: ["turn"]
+    restart: unless-stopped
+    network_mode: host
+    command:
+      - "--log-file=stdout"
+      - "--fingerprint"
+      - "--lt-cred-mech"
+      - "--no-cli"
+      - "--no-multicast-peers"
+      - "--min-port=49160"
+      - "--max-port=49200"
+      - "--realm=${TURN_REALM:-coupleroom.local}"
+      - "--user=${TURN_USER:-couple}:${TURN_PASSWORD:-change-me}"
+
+volumes:
+  coupleroom-data:

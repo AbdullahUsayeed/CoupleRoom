@@ -54,7 +54,7 @@ relayed by the TURN server you configure.
 | `server/src/turn.js` | ICE/TURN credential delivery |
 | `web/` | React 16 front end bundled with esbuild |
 | `deploy/` | Example nginx, Caddy and coturn configs |
-| `docs/` | [Configuration](docs/CONFIGURATION.md) and [deployment](docs/DEPLOY.md) guides |
+| `docs/` | [Configuration](docs/CONFIGURATION.md), [deployment](docs/DEPLOY.md) and [publishing](docs/PUBLISHING.md) guides |
 
 ## Quickstart
 
@@ -69,6 +69,23 @@ docker compose up -d --build
 
 Open <http://localhost:5000>. For camera/microphone access from another device
 you must serve the app over HTTPS — see [docs/DEPLOY.md](docs/DEPLOY.md).
+
+### From GitHub Packages (prebuilt image)
+
+Every release is published as a container image on GitHub Container Registry,
+so you can skip building entirely:
+
+```bash
+git clone https://github.com/AbdullahUsayeed/CoupleRoom.git
+cd CoupleRoom
+cp .env.example .env      # edit ROOM_PASSWORD at least
+
+docker compose -f docker-compose.release.yml up -d
+```
+
+Pin a version with `COUPLEROOM_IMAGE=ghcr.io/abdullahusayeed/coupleroom:1.0.0`.
+See [docs/PUBLISHING.md](docs/PUBLISHING.md) for tags, visibility and
+troubleshooting.
 
 ### Without Docker
 
@@ -136,6 +153,21 @@ TURN_MODE=cloudflare
 CF_TURN_KEY_ID=...
 CF_TURN_API_TOKEN=...
 ```
+
+## Releases & GitHub Packages
+
+Versioned releases are published as multi-arch container images to GitHub
+Container Registry:
+
+- `ghcr.io/abdullahusayeed/coupleroom:latest`
+- `ghcr.io/abdullahusayeed/coupleroom:<version>`
+
+```bash
+docker pull ghcr.io/abdullahusayeed/coupleroom:latest
+```
+
+Maintainers: see [docs/PUBLISHING.md](docs/PUBLISHING.md) for the release
+walkthrough, tag scheme and troubleshooting.
 
 ## Security notes
 
