@@ -1,0 +1,29 @@
+# Example coturn configuration for CoupleRoom (self-hosted TURN relay).
+#
+# Install coturn, drop this at /etc/turnserver.conf, edit the realm and the
+# user credentials, then restart coturn. Finally set in CoupleRoom's .env:
+#
+#   TURN_MODE=static
+#   STATIC_ICE=turn:turn.example.com:3478?transport=udp|username|credential
+#   STATIC_ICE=turn:turn.example.com:3478?transport=tcp|username|credential
+#
+# (Use one STATIC_ICE line; the value accepts a comma/newline separated list.)
+
+listening-port=3478
+# listening-ip=          # set to your public IP if the host has several
+min-port=49160
+max-port=49200
+
+fingerprint
+lt-cred-mech
+realm=room.example.com
+user=couple:change-me
+
+# Do not expose the CLI or allow relaying to multicast/private ranges.
+no-cli
+no-multicast-peers
+
+# A public TURN server generally wants an external-ip when behind NAT:
+# external-ip=PUBLIC_IP/PRIVATE_IP
+
+log-file=stdout

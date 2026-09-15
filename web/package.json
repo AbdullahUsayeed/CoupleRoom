@@ -1,0 +1,20 @@
+{
+  "name": "coupleroom-web",
+  "version": "1.0.0",
+  "description": "CoupleRoom web client: video call, chat and watch-together in one page",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "dependencies": {
+    "react": "16.14.0",
+    "react-dom": "16.14.0",
+    "react-youtube": "7.13.1",
+    "socket.io-client": "4.7.5"
+  },
+  "devDependencies": {
+    "esbuild": "0.23.1"
+  }
+}

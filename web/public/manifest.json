@@ -1,0 +1,17 @@
+{
+  "name": "CoupleRoom",
+  "short_name": "CoupleRoom",
+  "description": "A tiny universe for two: video call, chat and watch together.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1a0b2e",
+  "theme_color": "#1a0b2e",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

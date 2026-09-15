@@ -1,0 +1,16 @@
+export const PLAY = 'PLAY';
+export const PAUSE = 'PAUSE';
+export const SYNC_TIME = 'SYNC_TIME';
+export const SEEK = 'SEEK';
+export const NEW_VIDEO = 'NEW_VIDEO';
+export const ASK_FOR_VIDEO_INFORMATION = 'ASK_FOR_VIDEO_INFORMATION';
+export const SYNC_VIDEO_INFORMATION = 'SYNC_VIDEO_INFORMATION';
+export const SYNC_STATE = 'SYNC_STATE';
+export const JOIN_ROOM = 'JOIN_ROOM';
+export const SEND_MESSAGE = 'SEND_MESSAGE';
+export const RECEIVED_MESSAGE = 'RECEIVED_MESSAGE';
+export const USERS = 'USERS';
+export const TYPING = 'TYPING';
+export const REACTION = 'REACTION';
+export const CHAT_AUTH = 'CHAT_AUTH';
+export const CHAT_UNLOCKED = 'CHAT_UNLOCKED';

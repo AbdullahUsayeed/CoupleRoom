@@ -1,0 +1,20 @@
+{
+  "name": "coupleroom-server",
+  "version": "1.0.0",
+  "description": "CoupleRoom backend: a private room with video calls, chat and watch-together sync",
+  "license": "MIT",
+  "private": true,
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.3.0",
+    "express": "^4.19.2",
+    "socket.io": "^4.7.5"
+  }
+}

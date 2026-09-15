@@ -1,0 +1,46 @@
+# CoupleRoom - single-service deploy.
+#
+#   cp .env.example .env && edit it
+#   docker compose up -d --build
+#
+# The app is served on port 5000. Put HTTPS in front of it with a reverse
+# proxy (see deploy/Caddyfile.example or deploy/nginx.conf.example); browsers
+# only allow camera/microphone access on secure origins.
+
+services:
+  coupleroom:
+    build: .
+    image: coupleroom
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:5000:5000"
+    env_file:
+      - .env
+    environment:
+      HOST: 0.0.0.0
+      PORT: "5000"
+      DB_PATH: /app/data/couple-room.db
+    volumes:
+      - coupleroom-data:/app/data
+
+  # Optional self-hosted TURN relay. Enable with:
+  #   docker compose --profile turn up -d --build
+  # then set TURN_MODE=static and STATIC_ICE in .env.
+  coturn:
+    image: coturn/coturn:4.6
+    profiles: ["turn"]
+    restart: unless-stopped
+    network_mode: host
+    command:
+      - "--log-file=stdout"
+      - "--fingerprint"
+      - "--lt-cred-mech"
+      - "--no-cli"
+      - "--no-multicast-peers"
+      - "--min-port=49160"
+      - "--max-port=49200"
+      - "--realm=${TURN_REALM:-coupleroom.local}"
+      - "--user=${TURN_USER:-couple}:${TURN_PASSWORD:-change-me}"
+
+volumes:
+  coupleroom-data:

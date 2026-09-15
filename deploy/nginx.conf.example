@@ -1,0 +1,36 @@
+# CoupleRoom behind nginx with TLS.
+#
+# 1. Point a DNS record at your server.
+# 2. Get a certificate (e.g. with certbot) and fill in the paths below.
+# 3. Reverse-proxy everything to the app on 127.0.0.1:5000.
+#
+# The Upgrade/Connection headers are what let Socket.IO use websockets.
+
+server {
+    listen 80;
+    server_name room.example.com;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name room.example.com;
+
+    ssl_certificate     /etc/letsencrypt/live/room.example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/room.example.com/privkey.pem;
+
+    client_max_body_size 2m;
+
+    location / {
+        proxy_pass http://127.0.0.1:5000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 600s;
+        proxy_send_timeout 600s;
+    }
+}

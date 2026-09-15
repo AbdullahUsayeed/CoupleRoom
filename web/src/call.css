@@ -1,0 +1,85 @@
+#call-panel {
+  position: fixed;
+  left: max(12px, env(safe-area-inset-left));
+  bottom: max(12px, env(safe-area-inset-bottom));
+  z-index: 6;
+  display: none;
+  flex-direction: column;
+  gap: 7px;
+  font-family: inherit;
+  user-select: none;
+}
+#call-panel.show { display: flex; }
+#call-panel .hidden { display: none !important; }
+
+#call-panel .call-tiles { display: flex; gap: 8px; align-items: flex-end; }
+
+.call-tile {
+  position: relative;
+  width: 200px;
+  height: 150px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: linear-gradient(160deg, #2a0b3a, #14001f);
+  border: 1px solid rgba(255, 143, 199, 0.5);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+.call-tile video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.call-tile.local video { transform: scaleX(-1); }
+
+.call-tile .call-ph {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 6px;
+  color: #ffd6e8;
+  font-size: 0.78rem;
+  background: radial-gradient(circle at 50% 38%, rgba(255, 143, 199, 0.28), rgba(20, 0, 31, 0.92));
+}
+.call-tile .call-name {
+  position: absolute;
+  left: 8px;
+  bottom: 6px;
+  font-size: 0.66rem;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.38);
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+#call-panel .call-controls { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
+#call-panel .call-controls button {
+  border: 1px solid rgba(255, 182, 193, 0.45);
+  cursor: pointer;
+  border-radius: 14px;
+  min-width: 38px;
+  height: 38px;
+  padding: 0 8px;
+  font-size: 1rem;
+  color: #ffd6e8;
+  background: rgba(255, 105, 180, 0.22);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+#call-panel .call-controls button:hover { background: rgba(255, 105, 180, 0.36); }
+#call-panel .call-controls button.off { opacity: 0.42; }
+#call-start { width: auto !important; padding: 0 14px !important; font-weight: 700; font-size: 0.82rem !important; }
+#call-answer { background: rgba(80, 220, 140, 0.32) !important; }
+#call-decline, #call-end { background: rgba(255, 80, 110, 0.34) !important; }
+
+#call-panel .call-status {
+  min-height: 1em;
+  text-align: center;
+  font-size: 0.72rem;
+  color: #ffd6e8;
+  text-shadow: 0 1px 3px #000;
+}
+#call-panel .call-status.err { color: #ff9a9a; }
+
+@media (max-width: 560px) {
+  .call-tile { width: 150px; height: 112px; border-radius: 14px; }
+  #call-panel .call-controls button { min-width: 34px; height: 34px; }
+}

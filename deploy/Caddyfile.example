@@ -1,0 +1,11 @@
+# CoupleRoom behind Caddy. Caddy obtains and renews HTTPS certificates
+# automatically and upgrades websockets transparently.
+#
+# Replace room.example.com with your domain, then run:
+#   caddy run --config Caddyfile
+#
+# The app must be listening on 127.0.0.1:5000.
+
+room.example.com {
+    reverse_proxy 127.0.0.1:5000
+}
